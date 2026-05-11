@@ -1,5 +1,5 @@
 import Foundation
-import CoreGraphics
+import AppKit
 
 final class DisplayManager: ObservableObject {
     @Published var currentConfig: DisplayConfiguration = DisplayConfiguration(displays: [])
@@ -77,20 +77,12 @@ final class DisplayManager: ObservableObject {
     }
 }
 
-/// Gets the visible frame for a CGDirectDisplayID by iterating NSScreen.screens.
 private func NSScreenForDisplay(_ displayID: CGDirectDisplayID) -> CGRect? {
-    // We use CoreGraphics directly since we can't import AppKit's NSScreen easily.
-    // Instead, return display bounds minus an estimated menu bar height for the main display.
-    let bounds = CGDisplayBounds(displayID)
-    let mainID = CGMainDisplayID()
-    if displayID == mainID {
-        let menuBarHeight: CGFloat = 25
-        return CGRect(
-            x: bounds.origin.x,
-            y: bounds.origin.y + menuBarHeight,
-            width: bounds.width,
-            height: bounds.height - menuBarHeight
-        )
+    for screen in NSScreen.screens {
+        let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? UInt32
+        if screenNumber == displayID {
+            return screen.visibleFrame
+        }
     }
-    return bounds
+    return nil
 }

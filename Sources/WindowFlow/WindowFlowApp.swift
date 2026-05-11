@@ -1,5 +1,5 @@
 import SwiftUI
-import ApplicationServices
+import AppKit
 
 @main
 struct WindowFlowApp: App {

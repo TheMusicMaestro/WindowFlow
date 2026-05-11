@@ -1,5 +1,6 @@
 import Foundation
-import CoreGraphics
+import AppKit
+import ApplicationServices
 
 final class LayoutEngine {
     private let windowManager: WindowManager

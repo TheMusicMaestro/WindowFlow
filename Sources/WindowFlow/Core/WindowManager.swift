@@ -1,5 +1,5 @@
 import Foundation
-import CoreGraphics
+import AppKit
 import ApplicationServices
 
 struct ManagedWindow {
@@ -18,13 +18,13 @@ final class WindowManager {
 
     static var hasAccessibilityPermission: Bool {
         AXIsProcessTrustedWithOptions(
-            [kAXTrustedCheckOptionPrompt: false] as CFDictionary
+            [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): false] as CFDictionary
         )
     }
 
     static func requestAccessibilityPermission() {
         AXIsProcessTrustedWithOptions(
-            [kAXTrustedCheckOptionPrompt: true] as CFDictionary
+            [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
         )
     }
 
