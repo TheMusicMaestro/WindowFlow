@@ -5,6 +5,7 @@ struct MenuBarView: View {
     @ObservedObject var settingsStore: SettingsStore
     @ObservedObject var displayManager: DisplayManager
     let layoutEngine: LayoutEngine
+    @Environment(\.openWindow) private var openWindow
     @State private var showingPreferences = false
 
     private var displayCount: Int { displayManager.currentConfig.count }
@@ -169,10 +170,8 @@ struct MenuBarView: View {
     private var footerSection: some View {
         VStack(spacing: 2) {
             Button {
-                showingPreferences = true
-                if let url = URL(string: "windowflow://preferences") {
-                    NSWorkspace.shared.open(url)
-                }
+                openWindow(id: "preferences")
+                NSApplication.shared.activate(ignoringOtherApps: true)
             } label: {
                 HStack {
                     Image(systemName: "gear")
